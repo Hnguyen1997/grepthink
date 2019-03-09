@@ -87,9 +87,9 @@
 
           // HEADER
           header: {
-            left: 'today prev,next',
+            left: 'agendaDay,agendaWeek,month',
             center: 'title',
-            right: 'agendaDay,agendaWeek,month'
+            right: 'today prev,next'
           },
 
           customButtons: {
@@ -127,13 +127,12 @@
           // slotDuration:'00:15:00',         //change event duration
           // Can click day/week names to navigate views
           navLinks: true,
-
+          //now indicator
+          nowIndicator: true,
           // Here Sean -andgates
           allDaySlot: false,
-
           // Allow users to resize events.
           editable: false,
-        
           // Allow "more" link when too many events.
           eventLimit: true,
           events:events,
