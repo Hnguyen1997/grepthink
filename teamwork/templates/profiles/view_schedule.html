@@ -29,6 +29,10 @@
 <script>
     events = JSON.parse(JSON.stringify({{json_events}}))
     var current_user=JSON.parse(JSON.stringify('{{page_username}}'));
+	
+	// Set up a value for Refresh feature (Refresh feature step 1).
+	 var checkChange=true;
+	
     $(document).ready(function() {
     // Function triggered by submit button
     // verfies events and then calls helper function
@@ -38,6 +42,9 @@
         event.preventDefault();
         // Get map of all events added on client side so far.
         var eventsOnSubmit = $('#calendar').fullCalendar('clientEvents');
+		
+		//For refresh feature(Refresh feature step 2)
+		checkChange=false;
         
           // Prepare to send event list to server.
           postEvents(eventsOnSubmit);
@@ -64,6 +71,18 @@
                 // Get the response from server and process it
                 // In this case simply alert the user.
                 alert(response);
+				
+				//For Refresh feature (Refresh feature step 3)
+				events=cEvents.map(function(e){
+                    return {
+                      start:e.start,
+                        end:e.end,
+                       title:e.title,
+                        initiator:e.initiator
+                    }
+                });
+                 checkChange=true;
+				
                 // setTimeout(function() {
                 //   location.reload();  //Refresh page
                 // }, 300);
@@ -71,6 +90,10 @@
               error: function (xhr) {
                 // Open JS debugger if ya goofed. Alert with last object.
                 // This should really trigger a 500 server error.
+				
+				//For Refresh feature (Refresh feature step 4)
+				checkChange=true;
+				
                 debugger;
                 alert(xhr);
             }
@@ -223,6 +246,33 @@
           },
 
       })
+	  
+	  // Main code of the Refresh feature (For refresh feature step 5)
+	  var confirmTag=false;
+
+      setInterval(function(){
+      	$.ajax({
+              url: 'ajax/refresh_schedule/',
+              type: 'POST',
+              success: function (response) {
+                var resp=response.split(" ").join("");
+              	if(JSON.stringify(events)!=resp&&checkChange){
+              	    events=JSON.parse(resp);
+              		if(!confirmTag){
+              			confirmTag=true;
+              			var sure=confirm("New schedule is detected. Do you need refresh this schedule?");
+              			if(sure){
+              				window.location.reload();
+              			}
+              			confirmTag=false;
+              		}
+
+              	}
+              }
+          });
+		  // Refresh Check time
+      },1000)
+	  
      }) // End fullCalendar initialization.
      
 

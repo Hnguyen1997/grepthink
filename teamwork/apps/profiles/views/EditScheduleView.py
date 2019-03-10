@@ -8,7 +8,10 @@ from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 # Model Imports
 from teamwork.apps.profiles.models import Profile
+# Be careful for this one, it may effect the Refresh feature
 from django.http import HttpResponseRedirect
+# For Refresh feature step 12
+from django.http import HttpResponse, JsonResponse
 
 # Model Imports
 from teamwork.apps.profiles.models import Profile, Events,Credentials
@@ -127,6 +130,23 @@ def save_event(request, username):
         #return HttpResponse(json.dumps({'eventData' : eventData}), content_type="application/json")
 
     return HttpResponse("Failure")
+
+# For Refresh feature step 13
+@csrf_exempt
+def refresh_schedule(request, username):
+
+    user = get_object_or_404(User, username=username)
+    profile = Profile.objects.get(user=user)
+
+    #gets current avaliability
+    readable = ""
+    if profile.jsonavail:
+        jsonDec = json.decoder.JSONDecoder()
+        readable = jsonDec.decode(profile.jsonavail)
+
+    meetings = mark_safe(profile.jsonavail)
+
+    return JsonResponse(meetings,safe=False, json_dumps_params={'ensure_ascii': False})
 
 @login_required
 def import_schedule(request,username):
