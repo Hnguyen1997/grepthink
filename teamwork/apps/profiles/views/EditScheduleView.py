@@ -59,8 +59,13 @@ def edit_schedule(request, username):
         readable = jsonDec.decode(profile.jsonavail)
 
     meetings = mark_safe(profile.jsonavail)
+    
+    if(profile.isProf==True):
+        is_prof=True
+    else:
+        is_prof=False
 
-    return render(request, 'profiles/edit_schedule.html', {'page_name' : page_name, 'page_description': page_description, 'title': title, 'json_events' : meetings,'this_user':this_user})
+    return render(request, 'profiles/edit_schedule.html', {'page_name' : page_name, 'page_description': page_description, 'title': title, 'json_events' : meetings,'this_user':this_user,'is_Prof':is_prof})
 
 @csrf_exempt
 def save_event(request, username):
@@ -263,3 +268,20 @@ def get_credentials(username):
     http = credentials.authorize(httplib2.Http())
     service = build('calendar', 'v3', http=http)
     return (service,credentials)
+
+
+@csrf_exempt
+def save_time_limit(request, username):
+    #grab profile for the current user
+    profile = Profile.objects.get(user=request.user)
+    if(profile.isProf==True):
+        if(request.method == 'POST'):
+            time = request.POST.get('time')
+            time_limit=int(json.loads(time))
+            profile.meeting_limit=time_limit
+            profile.save()
+            return HttpResponse("Set Meeting Time Limit")
+    else:
+        return HttpResponse('Wrong user category')       
+
+
