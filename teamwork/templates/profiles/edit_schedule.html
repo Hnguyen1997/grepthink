@@ -295,11 +295,34 @@
             // Unselct event area before exiting select method.
             $('#calendar').fullCalendar('unselect');
           },
-
+           
+          /*
           eventClick: function(event, jsonEvents, view) {
-            
+            $('input#editTitle').val(Event.title);
+            $('#editEvent').modal('show');
+            $('update').unbind();
+            $('#update').on('click', function() {
+              var title = $('input#editTitle').val();
+              $('#editEvent').modal('hide');
+              var eventData;
+              if (title){
+                Event.title = title 
+                $('#calendar').fullCalendar('updateEvent' , Event);
+              } else{
+                alert("Title can't be blank. Please try again.")
+              }
+            });
+            $('#delete').on('click', function() {
+              $('#delete').unbind();
+              if (Event._id.includes("_fc")){
+                $('#calendar').fullCalendar('removeEvents', event._id);
+              } else {
+                $('#calendar').fullCalendar('removeEvents', event._id);
+              }
+              $('#editEvent').modal('hide');
+            }); 
           }
-          
+          */
       }) // End fullCalendar initialization.
 
 	   // Main code for the Refresh feature (Refresh feature step 10)

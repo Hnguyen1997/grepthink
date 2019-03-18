@@ -221,6 +221,32 @@
               });
             }
           },
+
+          /*
+          select: function(start, end) {
+            var title; 
+            var eventData; 
+
+            $('input#title').val("");
+            $('#newEvent').modal('show');
+            $('#submit').unbind();
+            $('#submit').on('click', function() {
+              title = $('input#title').val();
+              if (title) {
+                eventData = {
+                  title: title,
+                  start: start
+                };
+                $('#calendar').fullCalendar('renderEvent', eventData, true);
+                $('#newEvent').modal('hide');
+              }
+              else {
+                alert("Title can't be blank. Please try again.")
+              }
+            }); 
+          },
+          */
+
           // Function called on select event.
           // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
           select: function(start, end) {
@@ -251,8 +277,36 @@
             // Unselct event area before exiting select method.
             $('#calendar').fullCalendar('unselect');
           },
-
       })
+      
+          /*
+          eventClick: function(event, jsonEvents, view) {
+            $('input#editTitle').val(Event.title);
+            $('#editEvent').modal('show');
+            $('update').unbind();
+            $('#update').on('click', function() {
+              var title = $('input#editTitle').val();
+              $('#editEvent').modal('hide');
+              var eventData;
+              if (title){
+                Event.title = title 
+                $('#calendar').fullCalendar('updateEvent' , Event);
+              } else{
+                alert("Title can't be blank. Please try again.")
+              }
+            });
+            $('#delete').on('click', function() {
+              $('#delete').unbind();
+              if (Event._id.includes("_fc")){
+                $('#calendar').fullCalendar('removeEvents', event._id);
+              } else {
+                $('#calendar').fullCalendar('removeEvents', event._id);
+              }
+              $('#editEvent').modal('hide');
+            }); 
+          }
+          */
+
 	  
 	  // Main code of the Refresh feature (For refresh feature step 5)
 	  var confirmTag=false;
