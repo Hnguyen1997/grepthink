@@ -26,7 +26,7 @@
 
 <!-- <script src="{% static 'js/fullcalendar.min.js' %}"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css"/>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css"/> 
 
 <!-- <script src="{% static 'js/schedule.js' %}"></script> -->
 
@@ -69,6 +69,11 @@
             console.log("click");
             $("#emptyAlert").hide();
             postEvents([]);
+      });
+
+      //disable right click 
+      $(document).contextmenu(function() {
+        return false;
       });
 
       $('#clear-events').on('submit', function(event){
@@ -245,41 +250,44 @@
           },
 		  
 		  // Add Event Dynamically 
-            customButtons: {
+          customButtons: {
 		        addEventButton: {
 			        text: 'Add new event',
-				    click: function() {
-					    var dateStr = prompt('Enter date in YYYY-MM-DD format');
-						var date = moment(dateStr);
+				      click: function() {
+					      var dateStr = prompt('Enter date in YYYY-MM-DD format');
+						    var date = moment(dateStr);
 						
-						if (date.isValid()) {
-						    $('#calendar').fullCalendar('renderEvent', {
+						    if (date.isValid()) {
+						      $('#calendar').fullCalendar('renderEvent', {
 							    title: 'Event',
-								start: date,
-								end: date,
-								//color:'#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-								allDay: false
-							});
-						} else {
-						    alert('Invalid Date'); 
-						}
-				    }
-			    }
-		    },
-			dayClick: function(date, jsEvent, view) {
-			    var date = moment(date);
+								  start: date,
+								  end: date,
+								  //color:'#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+								  allDay: false
+							    });
+						    } else {
+						      alert('Invalid Date'); 
+						    }
+				      }
+			      }
+		      },
+			    
+          /*
+          dayClick: function(date, jsEvent, view) {
+			      var date = moment(date);
 				
-				if (date.isValid()) {
-				    $('#calendar').fullCalendar('renderEvent', {
+				    if (date.isValid()) {
+				      $('#calendar').fullCalendar('renderEvent', {
 					    title: 'Dynamic event from date click',
-						start: date,
-						allDay: true
-					});
-				} else {
-				    alert('Invalid');
-				}
-			},
-
+						  start: date,
+						  allDay: true
+					    });
+				    } else {
+				      alert('Invalid');
+				    }
+			    },
+          */
+          
           // Function called on select event.
           // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
           select: function(start, end) {
@@ -308,33 +316,6 @@
             $('#calendar').fullCalendar('unselect');
           },
            
-          /*
-          eventClick: function(event, jsonEvents, view) {
-            $('input#editTitle').val(Event.title);
-            $('#editEvent').modal('show');
-            $('update').unbind();
-            $('#update').on('click', function() {
-              var title = $('input#editTitle').val();
-              $('#editEvent').modal('hide');
-              var eventData;
-              if (title){
-                Event.title = title 
-                $('#calendar').fullCalendar('updateEvent' , Event);
-              } else{
-                alert("Title can't be blank. Please try again.")
-              }
-            });
-            $('#delete').on('click', function() {
-              $('#delete').unbind();
-              if (Event._id.includes("_fc")){
-                $('#calendar').fullCalendar('removeEvents', event._id);
-              } else {
-                $('#calendar').fullCalendar('removeEvents', event._id);
-              }
-              $('#editEvent').modal('hide');
-            }); 
-          }
-          */
       }) // End fullCalendar initialization.
 
 	   // Main code for the Refresh feature (Refresh feature step 10)
