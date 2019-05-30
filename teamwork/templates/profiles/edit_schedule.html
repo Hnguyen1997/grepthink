@@ -71,11 +71,6 @@
             postEvents([]);
       });
 
-      //disable right click 
-      $(document).contextmenu(function() {
-        return false;
-      });
-
       $('#clear-events').on('submit', function(event){
           // Prevent default behavior of submit form.
           event.preventDefault();
@@ -287,7 +282,7 @@
 				    }
 			    },
           */
-          
+
           // Function called on select event.
           // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
           select: function(start, end) {
