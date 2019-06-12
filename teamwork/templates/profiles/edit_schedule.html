@@ -38,7 +38,7 @@
   
   var current_user=JSON.parse(JSON.stringify('{{this_user}}'));
   console.log(current_user)
-  $(document).ready(function() {
+  $(document).ready(function() {  //BEGIN MAIN FUNCTION. 
 
       // Function triggered by submit button
       // verfies events and then calls helper function
@@ -163,19 +163,13 @@
       })
       });
 
-      // INITIALIZE CALENDAR. Options and callbacks set below. ----------------------------------------------------
+      // INITIALIZE CALENDAR. Options and callbacks set below. 
       $('#calendar').fullCalendar({
-
-          // Show montly, weekly and daily agenda for editing schedules.
-          defaultView: 'month',
-          fixedWeekCount: false,
-          showNonCurrentDates: true,
-
-          // HEADER
+          //HEADER
           header: {
             left: 'today prev,next addEventButton',
             center: 'title',
-            right: 'agendaDay,agendaWeek,month'
+            right: 'agendaDay,agendaWeek,month,listWeek'
           },
 
           // COLUMN HEADER DATE FORMATS
@@ -187,36 +181,52 @@
             agenda: {
               columnFormat: 'ddd M/D'
             }
-          }, 
-          // FOOTER
-          // automatically set to default: false 
+          },
 
+          //PROPERTIES
+          defaultView: 'month',  //default view is month
+          fixedWeekCount: false,  //weeks are changed based upon month
+          showNonCurrentDates: true,  
+          navLinks: true,  //can click to navigate calendar views 
+          allDaySlot: true,
+          editable: true,  //allow user to resize events
+          eventLimit: true,  //limit on events, "more" link when too many.
+          eventOverlap:false,
+          selectable: true,  //allow selection for select function
+          selectHelper: true, 
+          events:events,
+  
+          //DAYS OF WEEK
           businessHours: {
-              // days of week. an array of zero-based day of week integers (0=Sunday)
-              dow: [0, 1, 2, 3, 4, 5, 6], // Monday - Friday
-
-
+              //an array of zero-based days of week integers (0 = Sunday)
+              dow: [0, 1, 2, 3, 4, 5, 6], //Sunday - Saturday
               start: '8:00', // a start time (10am in this example)
               end: '22:00', // an end time (6pm in this example)
           },
 
-
-          defaultView: 'month',
-          // Can click day/week names to navigate views
-          navLinks: true,
-          // Here Sean -andgates
-          allDaySlot: true,
-          // Allow users to resize events.
-          editable: true,
-          // Allow "more" link when too many events.
-          eventLimit: true,
-          events:events,
-          eventOverlap:false,
-          // Allow selection for select function.
-          selectable: true,
-          selectHelper: true, 
-
-           //Limit the user to set the appointment 
+          //Add Event Dynamically 
+          customButtons: {
+            addEventButton: {
+              text: 'Add new event',
+              click: function() {
+                var dateStr = prompt('Enter date in YYYY-MM-DD format');
+                var date = moment(dateStr);
+            
+                if (date.isValid()) {
+                  $('#calendar').fullCalendar('renderEvent', {
+                  title: 'Event',
+                  start: date,
+                  end: date,
+                  allDay: false
+                  });
+                } else {
+                  alert('Invalid Date'); 
+                }
+              }
+            }
+          },
+          
+          //Limit the user to set the appointment 
           selectOverlap: function(event){
             return event.rendering === 'background';
           },
@@ -243,55 +253,14 @@
               trigger: 'hover'
             });
           },
-		  
-		  // Add Event Dynamically 
-          customButtons: {
-		        addEventButton: {
-			        text: 'Add new event',
-				      click: function() {
-					      var dateStr = prompt('Enter date in YYYY-MM-DD format');
-						    var date = moment(dateStr);
-						
-						    if (date.isValid()) {
-						      $('#calendar').fullCalendar('renderEvent', {
-							    title: 'Event',
-								  start: date,
-								  end: date,
-								  //color:'#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-								  allDay: false
-							    });
-						    } else {
-						      alert('Invalid Date'); 
-						    }
-				      }
-			      }
-		      },
-			    
-          /*
-          dayClick: function(date, jsEvent, view) {
-			      var date = moment(date);
-				
-				    if (date.isValid()) {
-				      $('#calendar').fullCalendar('renderEvent', {
-					    title: 'Dynamic event from date click',
-						  start: date,
-						  allDay: true
-					    });
-				    } else {
-				      alert('Invalid');
-				    }
-			    },
-          */
 
-          // Function called on select event.
+          // Function called on for select event.
           // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
           select: function(start, end) {
             // Title is always Available in edit_schedule 
-			// In future, need to make it available and busy 
             var title = 'Available';
             // Event Object to be passed to renderEvent
             var eventData;
-
             // Always true (likely change this to a check for "all day")
             if (title) {
               // Populate the Event Object. TODO: Add attributes.
@@ -303,19 +272,15 @@
               };
               // Render the event object with 'stick' set to true
               // so events persist unless page refresh.
-    
               $('#calendar').fullCalendar('renderEvent', eventData, true);
-
             }
             // Unselct event area before exiting select method.
             $('#calendar').fullCalendar('unselect');
-          },
-           
-      }) // End fullCalendar initialization.
+          },      
+      }) //END CALENDAR INITIALIZATION.
 
-	   // Main code for the Refresh feature (Refresh feature step 10)
+	// Main code for the Refresh feature (Refresh feature step 10)
 	var confirmTag=false;
-
       setInterval(function(){
       	$.ajax({
               url: 'ajax/refresh_schedule/',
@@ -338,7 +303,8 @@
           });
       },1000)
     
-  }); // End main function.
+  }); //END MAIN FUNCTION.
+
   function setTimeLimit(event){
         var set_time=document.getElementById('time_limit')
         if(event.target.value !== '0'){
