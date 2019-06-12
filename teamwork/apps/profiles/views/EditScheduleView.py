@@ -282,6 +282,5 @@ def save_time_limit(request, username):
             profile.save()
             return HttpResponse("Set Meeting Time Limit")
     else:
-        return HttpResponse('Wrong user category')       
-
+        return HttpResponse('Wrong user category')  
 
