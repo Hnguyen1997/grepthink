@@ -3,13 +3,13 @@ var plans = [];
 var activeTab = 0;
 var chartTab=0;
 
-
+//Add task under story
 function addLineNext(target) {
   var li = $(target).parents('.task-item');
   li.after('<li class="list-group-item task-item" style="padding:0"><div style="height:50px;"><div class="form-group task-line"><div class="task-before">☞</div><div style="flex:1"><input class="form-control plan-content" placeholder="please input plan"/></div><div class="duration-container"><input class="form-control duration" placeholder="duration" type="number"></div><div class="task-after"><span style="padding-left:4px;font-size: 2.2rem;">h</span><span  title="switch task status" class="task-status"><i class="iconfont icon-weiwancheng"   onclick="toggleStatus(this,0)" data-status="0"></i></span><span  title="add task next"><i class="iconfont icon-Add"  onclick="addLineNext(this)"></i></span><span title="remove task"><i class="iconfont icon-jian  text-danger" onclick="removeLine(this)" ></i></span></div></div></div></li>')
 }
 
-
+//remove task
 function removeLine(target) {
   var ul = $(target).parents('.task-list');
   if (ul.children().length > 1) {
@@ -20,6 +20,7 @@ function removeLine(target) {
 
 }
 
+//When you open the plan edit page, load the plan data saved on the server before
 function loadProjectPlan(id) {
   currentProject = id;
   $.ajax({
@@ -39,6 +40,7 @@ function loadProjectPlan(id) {
         if (!tag) {
           plans = [];
         }
+        //Load data successfully, render plan form
         renderPlanList(true)
       } else {
 
@@ -62,7 +64,7 @@ function addStory(target) {
   li.after(' <li class="story-item"><div class="story-container"><div style="height: 50px;line-height: 50px;padding:4px 0"><div class="col-sm-9"><input class="form-control story-title" placeholder="Please input your user story"></div><div class="col-sm-1 story-icon"><i class="iconfont icon-down-circle-o" onclick="toggleShow(this)" title="show tasks"></i></div><div class="col-sm-1  story-icon"><i class="iconfont icon-Add"  onclick="addStory(this)" title="add story"></i></div><div class="col-sm-1  story-icon"><i class="iconfont icon-jian"  onclick="deleteStory(this)"  title="delete story"></i></div></div><div class="task-container"><ul class="list-group task-list"><li class="list-group-item task-item" style="padding:0" data-finish=""><div style="height:50px;"><div class="form-group task-line"><div class="task-before">☞</div><div style="flex:1"><input class="form-control plan-content" placeholder="please input task"/></div><div class="duration-container"><input class="form-control duration" placeholder="duration" type="number"></div><div class="task-after"><span style="padding-left:4px;font-size: 2.2rem;">h</span><span  title="switch task status"  class="task-status"><i class="iconfont icon-weiwancheng"   onclick="toggleStatus(this,0)" data-status="0"></i></span><span  title="add task next"><i class="iconfont icon-Add"  onclick="addLineNext(this)"></i></span><span title="remove task"><i class="iconfont icon-jian  text-danger" onclick="removeLine(this)" ></i></span></div></div></div></li></ul></div></div></li>')
 }
 
-
+//delete story
 function deleteStory(target) {
   var ul = $(target).parents('#stories');
   if (ul.children().length > 1) {
@@ -72,6 +74,7 @@ function deleteStory(target) {
   }
 }
 
+//Switch the status of the plan (not completed, in progress, completed)
 function toggleStatus(target, status, finish) {
   if(plans[activeTab].period.length>0){
     var ps=plans[activeTab].period.split("-");
@@ -101,6 +104,7 @@ function toggleStatus(target, status, finish) {
   }
 }
 
+//Save all plans to the server
 function savePlans() {
   var volid = collectePlansData();
   if (!volid) {
@@ -113,7 +117,7 @@ function savePlans() {
   $.ajax({
     method: 'POST',
     data: data,
-    url: '/project/' + currentProject + '/plan/ajax/save_plan/#',
+    url: '/project/' + currentProject + '/plan/ajax/save_plan',
     success: function (res) {
        if(res.code==0){
          plans=res.data;
@@ -127,6 +131,7 @@ function savePlans() {
   })
 }
 
+//Rendering plan form data
 function renderPlanList(renderContent) {
   var plan = {
     stories: []
@@ -202,6 +207,7 @@ function renderPlanList(renderContent) {
 
 }
 
+//Get the data in the schedule. Returns false if the input box is not filled, otherwise returns true. Update the selected plan corresponding to the plan data object
 function collectePlansData() {
 
   var currentPlan = {};
@@ -256,6 +262,7 @@ function collectePlansData() {
   return true;
 }
 
+//Switch clicked story show/hide plan details
 function toggleShow(target) {
   if ($(target)[0].className == "iconfont icon-down-circle-o") {
     $(target).attr("title", "")
@@ -269,7 +276,7 @@ function toggleShow(target) {
 
 }
 
-
+//Click + to add a plan
 function addSprintPlan() {
   //save current  data
   var volid = collectePlansData();
@@ -299,7 +306,7 @@ function addSprintPlan() {
   renderPlanList(true)
 }
 
-
+//Click X to delete the plan
 function removePlanTab(target, index) {
   if (plans.length > 1) {
     //remove plan in plans array
@@ -336,6 +343,7 @@ function removePlanTab(target, index) {
   }
 }
 
+//Switch the plan that is activated to display
 function switchPlanTab(target, index) {
   var volid = collectePlansData();
   if (!volid) {
@@ -346,6 +354,7 @@ function switchPlanTab(target, index) {
   renderPlanList(true)
 }
 
+//Load plan data from the server
 function loadChartData(id){
   $.ajax({
     url: '/project/' + id + '/plan/ajax/load',
@@ -356,6 +365,7 @@ function loadChartData(id){
           alert("There is no data for rendering the chart.")
         }else{
           chartTab=0;
+          //Display the first plan chart
           loadChart()
         }
       }
@@ -367,18 +377,20 @@ function loadChartData(id){
   })
 }
 
-
+//Switch the plan charts to be displayed (one chart for each plan)
 function switchChartTab(index){
   chartTab=index;
   loadChart();
 }
 
 function loadChart() {
+  //Activate the selected plan tab
   var tabHtml="";
   for(var i in plans){
     tabHtml+='<div class="tab-item '+(i==chartTab?"active":"")+'"><span onclick="switchChartTab('+parseInt(i)+')">Sprint plan '+(parseInt(i)+1)+'</span></div>'
   }
   $(".chart-tab").html(tabHtml);
+  //Calculate chart ordinate data
   var plan=plans[chartTab];
   var mTasks={};
   var totalHours=0;
@@ -426,6 +438,7 @@ function loadChart() {
     currentData+=dayHours;
     realData.push(currentData)
   }
+  //Draw a chart, refer to echart documentation
   var myChart = echarts.init(document.getElementById('myChart'));
   var option = {
     grid: {
@@ -457,7 +470,7 @@ function loadChart() {
         nameRotate:90
     },
     series: [{
-     type:'line',
+      type:'line',
       name:"day",
       data: dataBase,
       lineStyle:{
@@ -478,7 +491,7 @@ function loadChart() {
 }
 
 
-
+//Date formatting
 Date.prototype.Format = function(fmt) {
   var o = {
     "M+": this.getMonth() + 1,
