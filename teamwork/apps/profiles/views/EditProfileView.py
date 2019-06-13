@@ -140,6 +140,7 @@ def edit_profile(request, username):
 
         #redirects to view_profile when submit button is clicked
         return redirect(view_profile, username)
+
     else:
         #load form with prepopulated data
         form = ProfileForm(instance=profile)
@@ -182,7 +183,6 @@ def edit_profile_helper(request, username):
         if name:
             profile.name = name
         if email:
-
             profileUser.email = email
         if bio:
             profile.bio = bio

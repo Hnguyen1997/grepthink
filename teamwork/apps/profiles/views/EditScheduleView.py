@@ -293,3 +293,4 @@ def revoke_access(request,username):
         return HttpResponseRedirect("/")
     else:
         return HttpResponse("No user Google's credential found")
+    
