@@ -1,15 +1,16 @@
-{% extends 'base.html' %} {% load static %} {% load i18n %} # Clear out javascript block at bottom of page so we can import specific js #} {% block javascript %}
-<script src="{% static 'js/jquery.min.js' %}"></script>
+{% extends 'base.html' %}
 
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+{% load static %}
+{% load i18n %}
 
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-    $.widget.bridge('uibutton', $.ui.button);
+{% block stylesheets %}
 
+  {{ block.super }}
 
-</script>
+  <link rel="stylesheet" href="{% static 'css/Tooltip.css' %}">
 
+<<<<<<< HEAD
+=======
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 <script src="{% static 'js/app.min.js' %}"></script>
@@ -24,7 +25,9 @@
 <link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}">
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1210387_ltrsatgg44.css">
 <link rel="stylesheet" href="{% static 'css/project.css' %}">
+>>>>>>> test3
 {% endblock stylesheets %}
+
 {% block content %}
 
 <!-- BREADCRUMB -->

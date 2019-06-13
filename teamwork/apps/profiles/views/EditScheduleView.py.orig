@@ -282,6 +282,7 @@ def save_time_limit(request, username):
             profile.save()
             return HttpResponse("Set Meeting Time Limit")
     else:
+<<<<<<< HEAD
         return HttpResponse('Wrong user category')       
 
 @login_required
@@ -294,3 +295,7 @@ def revoke_access(request,username):
     else:
         return HttpResponse("No user Google's credential found")
     
+=======
+        return HttpResponse('Wrong user category')  
+
+>>>>>>> test2

@@ -24,11 +24,14 @@
 
 <script src="{% static 'js/moment.min.js' %}"></script>
 
-<script src="{% static 'js/fullcalendar.min.js' %}"></script>
+<!-- <script src="{% static 'js/fullcalendar.min.js' %}"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css"/>
 
 <script>
     events = JSON.parse(JSON.stringify({{json_events}}))
-    var current_user=JSON.parse(JSON.stringify('{{page_username}}'));
+    var current_user = JSON.parse(JSON.stringify('{{page_username}}'));
+    var meeting_limt = parseInt(JSON.parse(JSON.stringify('{{meeting_limit}}')));
 	
 	// Set up a value for Refresh feature (Refresh feature step 1).
 	 var checkChange=true;
@@ -114,15 +117,6 @@
             right: 'agendaDay,agendaWeek,month'
           },
 
-          customButtons: {
-            addEventBtn: {
-              text: 'add event',
-              click: function(){
-                alert('button clicked!');
-              }
-            }
-          },
-
           // COLUMN HEADER DATE FORMATS
           views: {
             month: {
@@ -133,12 +127,6 @@
               columnFormat: 'ddd M/D'
             }
           },
-
-          // Day of week shouldn't contain hard coded date.
-
-
-          // FOOTER
-          // automatically set to default: false
           
           
           businessHours: {
@@ -170,11 +158,17 @@
             start: '00:01', 
             end: '23:59', 
           },
-
-           //Limit the user to set the appointment 
-          selectOverlap: function(event){
-            return event.rendering === 'background';
+          selectAllow: function(selectEvent) { 
+            if(meeting_limt !=0){
+              var duration = moment.duration(selectEvent.end.diff(selectEvent.start));
+              return duration.asMinutes() <= meeting_limt;
+            }
           },
+
+          //  //Limit the user to set the appointment 
+          // selectOverlap: function(event){
+          //   return event.rendering === 'background';
+          // },
           
           //Double click on event to delete
           eventRender: function(event, element) {
@@ -212,17 +206,14 @@
                 content: event.title + "\n" + "Start: " + event.start.format('LT') + "\n" + ending, 
                 trigger: 'hover'
               });
-            }
-          },
+            }},
           // Function called on select event.
           // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
           select: function(start, end) {
             // Title is always Busy in edit_schedule
-            
             var title = 'Appointment';
             // Event Object to be passed to renderEvent
             var eventData;
-            
             // Always true (likely change this to a check for "all day")
             if (title) {
               // Populate the Event Object. TODO: Add attributes.

@@ -2,12 +2,23 @@
 
 
 {% for project in projects %}
-{% if forloop.first %}
-<div class="row">{% endif %}
+    {% if forloop.first %}<div class="row">{% endif %}
     <div class="col-md-4">
         <a href="{% url 'view_one_project' project.slug %}" style="none">
-            <div class="box box-widget widget-user-2">
+        <div class="box box-widget widget-user-2">
 
+<<<<<<< HEAD
+          <!-- Add the bg color to the header using any of the bg-* classes -->
+          <div class="widget-user-header {% if project.sponsor %} bg-yellow {% elif project.avail_mem %} bg-primary {% else %} bg-gray {% endif %}">
+            <div class="widget-user-image">
+              <img class="img-circle" src={{project.project_image}} alt="Project Image">
+            </div>
+            <!-- /.widget-user-image -->
+            <h3 class="widget-user-username">{{project.title}}</h3>
+            <h5 class="widget-user-desc">{{project.tagline}}</h5>
+            {% if project.sponsor %}
+            <span class="tooltip2 pull-right"><i class='glyphicon glyphicon-info-sign'></i>
+=======
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div
                     class="widget-user-header {% if project.sponsor %} bg-yellow {% elif project.avail_mem %} bg-primary {% else %} bg-gray {% endif %}">
@@ -19,6 +30,7 @@
                     <h5 class="widget-user-desc">{{project.tagline}}</h5>
                     {% if project.sponsor %}
                     <span class="tooltip2 pull-right"><i class='glyphicon glyphicon-info-sign'></i>
+>>>>>>> test3
                  <span class="tooltiptext2">This is a sponsored project</span>
             </span>
             {% endif %}
@@ -53,38 +65,23 @@
                   {% endif %}
               </a></li>
 
-                <li><a href="{% url 'profile' project.creator %}">Owner <span class="pull-right badge bg-blue">{{ project.creator }}</span></a>
-                </li>
-                <li>
-                    <div style="padding:8px;">
-                        <button type="button" class="btn  btn-primary" data-target="#myModal2" data-toggle="modal"
-                                onclick="loadChartData('{{project.id}}')">chart
-                        </button>
-                        <button type="button" class="btn  btn-primary" style="float:right;" data-toggle="modal"
-                                onclick="loadProjectPlan('{{project.id}}')"
-                                data-target="#myModal">plan
-                        </button>
-                    </div>
-                </li>
-            </ul>
+            <li><a href="{% url 'profile' project.creator %}">Owner <span class="pull-right badge bg-blue">{{ project.creator }}</span></a></li>
+          </ul>
         </div>
 
-    </div><!-- /.box -->
-    </a>
-</div>
-{% if forloop.counter|divisibleby:3 %}</div>
-<div class="row">
-    <div class="clearfix"></div>
-    {% endif %}
-    {% if forloop.last %}
-</div>
-<div class="clearfix"></div>{% endif %}
+      </div><!-- /.box -->
+      </a>
+    </div>
+    {% if forloop.counter|divisibleby:3 %}</div><div class="row"><div class="clearfix"></div>{% endif %}
+    {% if forloop.last %}</div><div class="clearfix"></div>{% endif %}
 {% empty %}
-<div>
-    </h3>You are not in any projects</h3>
+  <div>
+  </h3>You are not in any projects</h3>
 
-</div>
+  </div>
 {% endfor %}
+<<<<<<< HEAD
+=======
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -159,3 +156,4 @@
     </div>
 </div>
 
+>>>>>>> test3

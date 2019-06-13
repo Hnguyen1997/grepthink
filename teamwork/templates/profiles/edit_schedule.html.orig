@@ -170,6 +170,7 @@
             right: 'agendaDay,agendaWeek,month,listWeek'
           },
 
+<<<<<<< HEAD
           customButtons: {
             addEventBtn: {
               text: 'add event',
@@ -180,7 +181,10 @@
           },
 
 
+          // COLUMN HEADER DATE FORMATS
+=======
           //COLUMN HEADER DATE FORMATS
+>>>>>>> test2
           views: {
             month: {
               titleFormat: 'MMMM YYYY',  //full month & year
@@ -295,50 +299,19 @@
               trigger: 'hover'
             });
           },
-		  
-		  // Add Event Dynamically 
-          customButtons: {
-		        addEventButton: {
-			        text: 'Add new event',
-				      click: function() {
-					      var dateStr = prompt('Enter date in YYYY-MM-DD format');
-						    var date = moment(dateStr);
-						
-						    if (date.isValid()) {
-						      $('#calendar').fullCalendar('renderEvent', {
-							    title: 'Event',
-								  start: date,
-								  end: date,
-								  //color:'#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-								  allDay: false
-							    });
-						    } else {
-						      alert('Invalid Date'); 
-						    }
-				      }
-			      }
-		      },
-			    
-          /*
-          dayClick: function(date, jsEvent, view) {
-			      var date = moment(date);
-				
-				    if (date.isValid()) {
-				      $('#calendar').fullCalendar('renderEvent', {
-					    title: 'Dynamic event from date click',
-						  start: date,
-						  allDay: true
-					    });
-				    } else {
-				      alert('Invalid');
-				    }
-			    },
-          */
 
-          // Function called on for select event.
+<<<<<<< HEAD
+        
+          // Function called on select event.
           // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
           select: function(start, end) {
             // Title is always Busy in edit_schedule
+=======
+          // Function called on for select event.
+          // Adapted from https://fullcalendar.io/js/fullcalendar-3.4.0/demos/selectable.html
+          select: function(start, end) {
+            // Title is always Available in edit_schedule 
+>>>>>>> test2
             var title = 'Busy';
             // Event Object to be passed to renderEvent
             var eventData;
@@ -357,8 +330,14 @@
             }
             // Unselct event area before exiting select method.
             $('#calendar').fullCalendar('unselect');
+<<<<<<< HEAD
+          },
+
+      }) // End fullCalendar initialization.
+=======
           },      
       }); //END CALENDAR INITIALIZATION.
+>>>>>>> test2
 
 	// Main code for the Refresh feature (Refresh feature step 10)
 	var confirmTag=false;
