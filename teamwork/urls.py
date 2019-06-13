@@ -32,7 +32,6 @@ from teamwork.apps.projects.views import ProjectView, MyProjectsView, EditProjec
 # Profile Imports
 from teamwork.apps.profiles.views import BaseView as ProfileBaseView
 from teamwork.apps.profiles.views import AlertView, EditProfileView, EditScheduleView, ProfileView,ViewSchedule
-from teamwork.apps.profiles.views.EditScheduleView import import_schedule
 # Course Imports
 from teamwork.apps.courses.views import BaseView as CourseBaseView
 from teamwork.apps.courses.views import CourseView, EditCourseView, EmailCourseView, InterestView, MyCoursesView, StatsView, MatchesView
@@ -109,6 +108,12 @@ urlpatterns = [
         url(r'^project/(?P<slug>[^/]+)/edit/ajax/add_desired_techs/$', EditProjectView.add_desired_techs, name='add_desired_techs'),
         url(r'^project/create/ajax/add_desired_skills/$', EditProjectView.create_desired_skills, name='create_desired_skills'),
         url(r'^project/create/ajax/add_desired_techs/$', EditProjectView.create_desired_techs, name='create_desired_techs'),
+
+        url(r'^project/(?P<slug>[^/]+)/plan/ajax/load', MyProjectsView.loadProjectPlans,
+                      name='load_project_plans'),
+        url(r'^project/(?P<slug>[^/]+)/plan/ajax/save_plan', MyProjectsView.saveProjectPlans,
+                      name='save_project_plans'),
+
 
         # COURSE
         # Delete individual assignment (based on slug)
