@@ -108,10 +108,12 @@ urlpatterns = [
         url(r'^project/(?P<slug>[^/]+)/edit/ajax/add_desired_techs/$', EditProjectView.add_desired_techs, name='add_desired_techs'),
         url(r'^project/create/ajax/add_desired_skills/$', EditProjectView.create_desired_skills, name='create_desired_skills'),
         url(r'^project/create/ajax/add_desired_techs/$', EditProjectView.create_desired_techs, name='create_desired_techs'),
+
         url(r'^project/(?P<slug>[^/]+)/plan/ajax/load', MyProjectsView.loadProjectPlans,
                       name='load_project_plans'),
         url(r'^project/(?P<slug>[^/]+)/plan/ajax/save_plan', MyProjectsView.saveProjectPlans,
                       name='save_project_plans'),
+
 
         # COURSE
         # Delete individual assignment (based on slug)

@@ -114,10 +114,12 @@ class Techs(models.Model):
         save(self, *args, **kwargs):    Overides the default save operator...
         """
     # skill, a string
+
     tech = models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.tech
+
 
     class Meta:
         # Verbose name is the same as class name in this case.
@@ -134,6 +136,8 @@ class Techs(models.Model):
         I don't know what super does...
         """
         super(Techs, self).save(*args, **kwargs)
+
+
 
 
 class Project(models.Model):
@@ -244,12 +248,12 @@ class Project(models.Model):
         Skills,
         related_name="desired",
         default="")
-    # ---------------------------------------------------------------------------------
+
     desired_techs = models.ManyToManyField(
         Techs,
         related_name="technologies",
         default="")
-    # ----------------------------------------------------------------------------------
+
     # True when the proejct is accepting new members. False when project is full.
     avail_mem = models.BooleanField(
         default=True)
@@ -582,10 +586,12 @@ class Membership(models.Model):
         max_length=64)
 
     def __str__(self):
+
         return ("%s: %s" % (self.user.username, self.project.title))
 
 
 # -----------------------------------------------------------------------
+
 
 
 class ProjectUpdate(models.Model):
